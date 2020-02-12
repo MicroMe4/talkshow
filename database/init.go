@@ -2,13 +2,14 @@ package database
 
 import (
 	"io/ioutil"
+	"main/database/mongoserver"
 	"main/lib"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var mongodb *mongo.Client
+var mongodb *mongo.Client = nil
 
 func init() {
 	var dir string
@@ -22,16 +23,18 @@ func init() {
 		}
 		dir = str2
 	}
+	//mongodb 初始化
 	content, err := ioutil.ReadFile(dir + "mongo.json")
 	lib.QuickLib.Unmarshal(content, &mongoconf)
 	if uri, ok := mongoconf["uri"]; !ok {
-		break
-	} else {
-		if uristr, isString := uri.(string); !isString {
-			break
-		} else {
-
+		if uristr, isString := uri.(string); isString {
+			client, err := mongoserver.GetClientByURI(uristr)
+			if err != nil {
+				panic(err)
+			}
+			mongodb = client
 		}
-
 	}
+	//redis 初始化
+	//redis, err :=
 }
