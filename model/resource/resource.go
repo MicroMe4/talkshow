@@ -9,17 +9,9 @@ import (
 
 //Resource 资源数据
 type Resource struct {
-	//ID 数据唯一性标志
-	ID primitive.ObjectID `json:"_id" bson:"_id"`
-	//Descriptor 描述信息
-	//A:B:C:D
-	//A为数据类型(Audio, Video, Text...),
-	//B为编码方式加解密(BASE64/BASE32/AES...)，支持多层
-	//C为D代表的意义，即如何解析它
-	//D为数据本身
-	DescriptorStr string `json:"descriptor" xml:"descriptor" bson:"descriptor"`
-	//Sender 发送者
-	Sender string `json:"owner" xml:"owner" bson:"owner"`
+	ID            primitive.ObjectID `json:"_id" bson:"_id" xml:"_id"`                      //ID 数据唯一性标志
+	DescriptorStr string             `json:"descriptor" xml:"descriptor" bson:"descriptor"` //DescriptorStr 描述信息 （A:B:C:D） A为数据类型(Audio, Video, Text...),B为编码方式加解密(BASE64/BASE32/AES...)，支持多层，C为D代表的意义，即如何解析它，D为数据本身
+	Sender        string             `json:"owner" xml:"owner" bson:"owner"`                //Sender 发送者
 }
 
 //Descriptor 资源描述符
@@ -33,10 +25,6 @@ type Descriptor struct {
 const (
 	//TextType 文档类型
 	TextType uint = 1 << iota
-	//AudioType 音频类型
-	AudioType
-	//VideoType 视频类型
-	VideoType
 	//PictureType 图片类型
 	PictureType
 	//StreamingType 流数据（中转）类型
