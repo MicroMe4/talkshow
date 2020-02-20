@@ -7,7 +7,8 @@ import (
 )
 
 //QuickLib Json编码库
-var QuickLib jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
+var QuickLib jsoniter.API = jsoniter.ConfigFastest
 
 //DecodeBase Base编码器
 var DecodeBase = base64.StdEncoding
+
