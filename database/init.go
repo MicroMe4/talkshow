@@ -6,16 +6,18 @@ import (
 	"main/lib"
 	"os"
 
+	"github.com/go-redis/redis/v7"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var mongodb *mongo.Client = nil
+var redisdb *redis.Client = nil
 
 func init() {
 	var dir string
 	str1 := os.Getenv("TalkWebConfig")
 	str2, err := os.Getwd()
-	mongoconf := make(map[string]interface{})
+	conf := make(map[string]interface{})
 	dir = str1
 	if dir == "" {
 		if err != nil {
@@ -25,8 +27,8 @@ func init() {
 	}
 	//mongodb 初始化
 	content, err := ioutil.ReadFile(dir + "mongo.json")
-	lib.QuickLib.Unmarshal(content, &mongoconf)
-	if uri, ok := mongoconf["uri"]; !ok {
+	lib.QuickLib.Unmarshal(content, &conf)
+	if uri, ok := conf["uri"]; !ok {
 		if uristr, isString := uri.(string); isString {
 			client, err := mongoserver.GetClientByURI(uristr)
 			if err != nil {
@@ -35,6 +37,13 @@ func init() {
 			mongodb = client
 		}
 	}
-	//redis 初始化
-	//redis, err :=
+	content, err = ioutil.ReadFile(dir + "redis.json")
+	lib.QuickLib.Unmarshal(content, &conf)
+	redisdb = redis.NewClient(&redis.Options{
+		Addr:     conf["address"].(string),
+		Password: conf["password"].(string),
+	})
+	if redisdb == nil {
+		panic("failed assigning redis memory database")
+	}
 }
