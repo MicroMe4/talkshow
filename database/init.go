@@ -2,9 +2,10 @@ package database
 
 import (
 	"io/ioutil"
-	"main/database/mongoserver"
-	"main/lib"
 	"os"
+
+	"github.com/MicroMe4/talkshow/database/mongoserver"
+	"github.com/MicroMe4/talkshow/lib"
 
 	"github.com/go-redis/redis/v7"
 	"go.mongodb.org/mongo-driver/mongo"
